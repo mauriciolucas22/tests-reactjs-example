@@ -47,5 +47,15 @@ describe('TodoList component', () => {
     wrapper.find('button').simulate('click');
 
     expect(wrapper.state('todos')).toHaveLength(5)
-  })
+  });
+
+  it('should be able ro remove todo', () => {
+    const wrapper = shallow(<TodoList />);
+
+    wrapper.setState({ todos });
+
+    wrapper.find('li').first().simulate('click');
+
+    expect(wrapper.state('todos')).not.toContain(todos[0]);
+  });
 })

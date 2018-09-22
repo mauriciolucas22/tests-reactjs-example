@@ -14,11 +14,22 @@ export default class TodoList extends Component {
     })
   }
 
+  removeTodo = (id) => {
+    this.setState({
+      todos: this.state.todos.filter(todo => todo.id !== id),
+    });
+  };
+
   render() {
     return (
       <Fragment>
         <ul>
-          {this.state.todos.map(todo => <li key={todo.id}>{todo}</li>)}
+          {
+            this.state.todos.map(todo =>
+              <li key={todo.id} onClick={() => this.removeTodo(todo.id)}>
+                {todo}
+              </li>
+            )}
         </ul>
         <button onClick={this.addTodo}>Adicionar todo</button>
       </Fragment>
