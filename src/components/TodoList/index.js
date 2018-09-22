@@ -5,6 +5,18 @@ export default class TodoList extends Component {
     todos: [],
   };
 
+  componentDidMount() {
+    const todos = localStorage.getItem('todos');
+
+    const ls = localStorage.setItem('data', {
+      name: 'Jesus'
+    })
+
+    if (todos) {
+      this.setState({ todos: JSON.parse(todos) });
+    }
+  }
+
   addTodo = () => {
     this.setState({
       todos: [

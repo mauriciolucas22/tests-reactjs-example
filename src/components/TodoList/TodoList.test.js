@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TodoList from './index';
+import sinon from 'sinon';
 
 const todos = [
   { id: 0, text: 'Jesus' },
@@ -57,5 +58,14 @@ describe('TodoList component', () => {
     wrapper.find('li').first().simulate('click');
 
     expect(wrapper.state('todos')).not.toContain(todos[0]);
+  });
+
+  it('it should load todos from localStorage', () => {
+    //sinon.stub(localStorage, 'getItem').withArgs([])
+    sinon.stub(localStorage, 'getItem').returns(JSON.stringify(todos));
+
+    const wrapper = shallow(<TodoList />)
+
+    expect(wrapper.state('todos')).toEqual(todos);
   });
 })
