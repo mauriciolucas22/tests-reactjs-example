@@ -62,10 +62,24 @@ describe('TodoList component', () => {
 
   it('it should load todos from localStorage', () => {
     //sinon.stub(localStorage, 'getItem').withArgs([])
+    // stub simula retorno de funcao
     sinon.stub(localStorage, 'getItem').returns(JSON.stringify(todos));
 
     const wrapper = shallow(<TodoList />)
 
     expect(wrapper.state('todos')).toEqual(todos);
   });
+
+  it('should save todos to localStorage when added new todo', () => {
+    // inspecionar se func foi executada, seu valores, quant de vezez
+    const spy = sinon.spy(localStorage, 'setItem');
+
+    const wrapper = shallow(<TodoList />);
+
+    // instance acessa a classe de TodoList
+    wrapper.instance().addTodo();
+
+    // calledOnce = executado uma vez
+    expect(spy.calledOnce).toBe(true);
+  })
 })
