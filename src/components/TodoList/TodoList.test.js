@@ -2,26 +2,32 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import TodoList from './index';
 import sinon from 'sinon';
+import createMockStore from 'redux-mock-store';
+import { Creators as TodosActions } from '../../store/ducks/todos';
 
-const todos = [
-  { id: 0, text: 'Jesus' },
-  { id: 1, text: 'Christ' },
-  { id: 2, text: 'God' },
-  { id: 3, text: 'God' },
-];
+const mockStore = createMockStore(/*REDUCERS*/);
+const store = mockStore({
+  /**Inital state */
+  todos: [
+    { id: 0, text: 'Jesus' },
+    { id: 1, text: 'Christ' },
+    { id: 2, text: 'God' },
+    { id: 3, text: 'God' },
+  ],
+});
 
 describe('TodoList component', () => {
-  it('should render todos', () => {
+  fit('should render todos', () => {
     /**
      * Cria uma arvore de elementos em json na memoria
      */
-    const wrapper = shallow(<TodoList />);
+    const wrapper = shallow(<TodoList />, { context: { store } });
   
     // cria prropriedades
     //wrapper.setProps({})
   
     // cria state
-    wrapper.setState({ todos });
+    // wrapper.setState({ todos });
   
     /**
      * o que esperar
@@ -36,26 +42,26 @@ describe('TodoList component', () => {
      */
   
     // console.log(wrapper.html());
-    expect(wrapper.find('li')).toHaveLength(4)
+    expect(wrapper.dive().find('li')).toHaveLength(4)
     //expect(wrapper.find('li').length).toBe(3)
   });
 
   it('should be able to add new todo', () => {
-    const wrapper = shallow(<TodoList />)
+    const wrapper = shallow(<TodoList />, { context: { store } })
 
-    wrapper.setState({ todos });
+    // wrapper.setState({ todos });
 
-    wrapper.find('button').simulate('click');
+    wrapper.dive().find('button').simulate('click');
 
     expect(wrapper.state('todos')).toHaveLength(5)
   });
 
   it('should be able ro remove todo', () => {
-    const wrapper = shallow(<TodoList />);
+    const wrapper = shallow(<TodoList />, { context: { store } });
 
-    wrapper.setState({ todos });
+    // wrapper.setState({ todos });
 
-    wrapper.find('li').first().simulate('click');
+    wrapper.dive().find('li').first().simulate('click');
 
     expect(wrapper.state('todos')).not.toContain(todos[0]);
   });
